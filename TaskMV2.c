@@ -94,10 +94,11 @@ void displayTasks(char taskNames[10][50], int taskPriorities[10], char taskDates
 {
     if (taskCount > 0)
     {
-        printf("Task Name\t\tPriority\t\tDate\n");
+        printf("\n\n%-30s %-10s %-10s\n", "Task Name", "Priority", "Date");
+        printf("------------------------------------------------\n");
         for (int i = 0; i < taskCount; ++i)
         {
-            printf("%s\t\t%d\t\t%s\n", taskNames[i], taskPriorities[i], taskDates[i]);
+            printf("%-30s %-10d %-10s\n", taskNames[i], taskPriorities[i], taskDates[i]);
         }
     }
     else
