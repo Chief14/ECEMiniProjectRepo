@@ -78,7 +78,7 @@ void addTask(char taskNames[10][50], int taskPriorities[10], char taskDates[10][
         scanf("%d", &taskPriorities[*taskCount]);
 
         printf("Enter task date (DD/MM): ");
-        scanf("%5s", &taskDates[*taskCount]);
+        scanf("%5s", taskDates[*taskCount]);
 
         (*taskCount)++;
 
