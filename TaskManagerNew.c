@@ -1,56 +1,52 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-#define MAX_NAME_LENGTH 50
-#define MAX_DATE_LENGTH 20
-
-typedef struct
+// Function to add a task
+void addTask(char taskNames[50][10], int taskPriorities[10], int *taskCount)
 {
-    char name[MAX_NAME_LENGTH];
-    char date[MAX_DATE_LENGTH];
-    int priority;
-} Task;
+    if (*taskCount < MAX_TASKS)
+    {
+        printf("Enter task name: ");
+        // Use fgets to read input with spaces
+        fgets(taskNames[*taskCount], 50, stdin);
+        // Remove newline character from the end
+        taskNames[*taskCount][strcspn(taskNames[*taskCount], "\n")] = '\0';
 
-void addTask(Task **tasks, int *numTasks)
-{
-    Task newTask;
+        printf("Enter task priority (1-10): ");
+        scanf("%d", &taskPriorities[*taskCount]);
 
-    printf("Enter task name: ");
-    scanf("%s", newTask.name);
+        (*taskCount)++;
 
-    printf("Enter task date (YYYY-MM-DD): ");
-    scanf("%s", newTask.date);
-
-    printf("Enter priority (1-10): ");
-    scanf("%d", &newTask.priority);
-
-    (*numTasks)++;
-    *tasks = realloc(*tasks, (*numTasks) * sizeof(Task));
-    (*tasks)[*numTasks - 1] = newTask;
-
-    printf("Task added successfully!\n");
+        printf("Task added successfully!\n");
+    }
+    else
+    {
+        printf("Task manager is full. Cannot add more tasks.\n");
+    }
 }
 
-void displayTasks(Task *tasks, int numTasks)
+// Function to display tasks
+void displayTasks(char taskNames[10][50], int taskPriorities[10], int taskCount)
 {
-    if (numTasks == 0)
+    if (taskCount > 0)
+    {
+        printf("Task Name\tPriority\n");
+        for (int i = 0; i < taskCount; ++i)
+        {
+            printf("%s\t\t%d\n", taskNames[i], taskPriorities[i]);
+        }
+    }
+    else
     {
         printf("No tasks available.\n");
-        return;
-    }
-
-    printf("\nTasks:\n");
-    for (int i = 0; i < numTasks; i++)
-    {
-        printf("Name: %s, Date: %s, Priority: %d\n", tasks[i].name, tasks[i].date, tasks[i].priority);
     }
 }
 
 int main()
 {
-    Task *tasks = NULL;
-    int numTasks = 0;
+    char taskNames[10][50];
+    int taskPriorities[10];
+    int taskCount = 0;
     int choice;
 
     do
@@ -65,14 +61,14 @@ int main()
         switch (choice)
         {
         case 1:
-            addTask(&tasks, &numTasks);
+            getchar(); // Consume the newline character left by scanf
+            addTask(taskNames, taskPriorities, &taskCount);
             break;
         case 2:
-            displayTasks(tasks, numTasks);
+            displayTasks(taskNames, taskPriorities, taskCount);
             break;
         case 3:
-            free(tasks);
-            printf("Exiting program.\n");
+            printf("Exiting Task Manager.\n");
             break;
         default:
             printf("Invalid choice. Please try again.\n");
