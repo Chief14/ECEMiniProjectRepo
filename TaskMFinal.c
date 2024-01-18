@@ -133,15 +133,15 @@ void sortByDate(char taskNames[10][50], int taskPriorities[10], char taskDates[1
         for (int j = 0; j < taskCount - i - 1; j++)
         {
             // Extract day, month, and year from dates
-            int day1, month1, year1;
+            int day1, month1;
             sscanf(taskDates[j], "%d/%d", &day1, &month1);
 
-            int day2, month2, year2;
+            int day2, month2;
             sscanf(taskDates[j + 1], "%d/%d", &day2, &month2);
 
             // Convert to a comparable integer representation (e.g., YYYYMMDD)
-            int date1 = year1 * 10000 + month1 * 100 + day1;
-            int date2 = year2 * 10000 + month2 * 100 + day2;
+            int date1 = month1 * 100 + day1;
+            int date2 = month2 * 100 + day2;
 
             // Compare dates numerically
             if (date1 > date2)
