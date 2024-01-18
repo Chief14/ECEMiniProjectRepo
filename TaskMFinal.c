@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
 // Function to add a task
 void addTask(char taskNames[10][50], int taskPriorities[10], char taskDates[10][6], int *taskCount);
@@ -18,7 +18,7 @@ void swaptask(char taskNames[10][50], int taskPriorities[10], char taskDates[10]
 
 int main()
 {
-    // Initialised all
+    // Initialised all data
     char taskNames[10][50];
     int taskPriorities[10];
     char taskDates[10][6];
@@ -72,8 +72,11 @@ void addTask(char taskNames[10][50], int taskPriorities[10], char taskDates[10][
         // Use fgets to read input with spaces
         fgets(taskNames[*taskCount], 50, stdin);
         // Remove newline character from the end
-        taskNames[*taskCount][strcspn(taskNames[*taskCount], "\n")] = '\0';
-
+        char *newlinePos = strchr(taskNames[*taskCount], '\n');
+        if (newlinePos != NULL)
+        {
+            *newlinePos = '\0';
+        }
         printf("Enter task priority (1-10): ");
         scanf("%d", &taskPriorities[*taskCount]);
 
@@ -94,10 +97,11 @@ void displayTasks(char taskNames[10][50], int taskPriorities[10], char taskDates
 {
     if (taskCount > 0)
     {
-        printf("Task Name\t\tPriority\t\tDate\n");
+        printf("\n\n%-30s %-10s %-10s\n", "Task Name", "Priority", "Date");
+        printf("------------------------------------------------\n");
         for (int i = 0; i < taskCount; ++i)
         {
-            printf("%s\t\t%d\t\t%s\n", taskNames[i], taskPriorities[i], taskDates[i]);
+            printf("%-30s %-10d %-10s\n", taskNames[i], taskPriorities[i], taskDates[i]);
         }
     }
     else
@@ -128,8 +132,19 @@ void sortByDate(char taskNames[10][50], int taskPriorities[10], char taskDates[1
     {
         for (int j = 0; j < taskCount - i - 1; j++)
         {
-            // Compare dates in DD/MM format
-            if (strcmp(taskDates[j], taskDates[j + 1]) > 0)
+            // Extract day, month, and year from dates
+            int day1, month1, year1;
+            sscanf(taskDates[j], "%d/%d", &day1, &month1);
+
+            int day2, month2, year2;
+            sscanf(taskDates[j + 1], "%d/%d", &day2, &month2);
+
+            // Convert to a comparable integer representation (e.g., YYYYMMDD)
+            int date1 = year1 * 10000 + month1 * 100 + day1;
+            int date2 = year2 * 10000 + month2 * 100 + day2;
+
+            // Compare dates numerically
+            if (date1 > date2)
             {
                 // Swap tasks if needed
                 swaptask(taskNames, taskPriorities, taskDates, j, j + 1);
