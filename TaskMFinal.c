@@ -117,7 +117,7 @@ void sortByPriority(char taskNames[10][50], int taskPriorities[10], char taskDat
         for (int j = 0; j < taskCount - i - 1; j++)
         {
             // Compare priorities
-            if (taskPriorities[j] > taskPriorities[j + 1])
+            if (taskPriorities[j] < taskPriorities[j + 1])
             {
                 // Swap tasks if needed
                 swaptask(taskNames, taskPriorities, taskDates, j, j + 1);
